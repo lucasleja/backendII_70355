@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1,
+    "title": "Bicicleta de Carretera 1",
+    "description": "Bicicleta de carretera para largas distancias",
+    "code": "BIC003",
+    "price": 50000,
+    "stock": 10,
+    "category": "Bicicletas",
+    "thumbnails": [
+      "/img/bicicleta-carretera1.jpg",
+      "/img/bicicleta-carretera2.jpg"
+    ],
+    "status": true
+  },
+  {
+    "id": 2,
+    "title": "Bicicleta de Carretera 2",
+    "description": "Bicicleta de carretera para largas distancias",
+    "code": "BIC003",
+    "price": 45000,
+    "stock": 3,
+    "category": "Bicicletas",
+    "thumbnails": [
+      "/img/bicicleta-carretera1.jpg",
+      "/img/bicicleta-carretera2.jpg"
+    ],
+    "status": true
+  },
+  {
+    "id": 3,
+    "title": "Bicicleta de Carretera 3",
+    "description": "Bicicleta de carretera para largas distancias",
+    "code": "BIC003",
+    "price": 45000,
+    "stock": 2,
+    "category": "Bicicletas",
+    "status": true
+  }
+]

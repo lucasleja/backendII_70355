@@ -1,0 +1,24 @@
+<h1>Productos</h1>
+
+<form action="/api/products" method="post">
+    <label for="">Title</label><br>
+    <input type="text" name="title" class="input"><br><br>
+    <label for="">Description</label><br>
+    <input type="text" name="description" class="input"><br><br>
+    <label for="">Code</label><br>
+    <input type="text" name="code" class="input"><br><br>
+    <label for="">Price</label><br>
+    <input type="text" name="price" class="input"><br><br>
+    <label for="">Stock</label><br>
+    <input type="text" name="stock" class="input"><br><br>
+    <label for="">Category</label><br>
+    <input type="text" name="category" class="input"><br><br>
+    <p class="hidden err-data">Incomplete data</p><br>
+    <button type="input" class="btn-form" id="btnForm">Add</button>
+</form>
+
+<h2>Lista de productos</h2>
+<div id="productsList"></div>
+
+<script src="socket.io/socket.io.js"></script>
+<script src="js/realTimeProducts.js"></script>
