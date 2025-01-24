@@ -47,6 +47,8 @@ app.use('/api/products', productsRoutes)
 
 app.use('/api/sessions', sessionsRouter)
 
+/* app.use('/api/session', sessionsRouter) */
+
 app.use('/', viewsRouter)
 
 const httpServer = app.listen(PORT, ()=>{

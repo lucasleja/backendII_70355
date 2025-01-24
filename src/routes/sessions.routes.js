@@ -2,6 +2,7 @@ import { Router } from "express";
 import { userDao } from "../services/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import passport from "passport";
+import { createToken } from "../utils/jwt.js";
 
 const router = Router();
 
@@ -52,7 +53,12 @@ router.post("/login", passport.authenticate("login"), async (req, res) => {
       role: "user"
     } */
 
-    res.status(200).json({status: "success", payload: req.session.user})
+      const token = createToken(req.user)
+      res.status(200).json({status: "success", payload: req.session.user, token})
+
+
+
+    /* res.status(200).json({status: "success", payload: req.session.user}) */
     
   } catch (error) {
     console.log(error);
@@ -111,5 +117,16 @@ router.put("/restore-password", async (req, res) => {
   }
   
 })
+
+router.get("/google", passport.authenticate("google", {
+  scope: ["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile"],
+  session: false
+}), async (req, res) => {
+
+  return res.status(200).json({status: "success", session: req.user})
+  
+})
+
+
 
 export default router;

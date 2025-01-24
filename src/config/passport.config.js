@@ -1,9 +1,12 @@
 import passport from "passport";
 import local from "passport-local";
+import google from "passport-google-oauth2";
 import { userDao } from "../services/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 
 const LocalStrategy = local.Strategy;
+const GoogleStrategy = google.Strategy;
+
 
 // Función global de estrategias
 export const initializedPassport = () => {
@@ -60,6 +63,40 @@ export const initializedPassport = () => {
       }
     }))
   
+
+  // Estrategia de google
+  passport.use(
+    "google",
+    new GoogleStrategy(
+      {
+        clientID: "743180750724-1cu5o9ih60mg5pnkfbot0jvlpjveh49m.apps.googleusercontent.com",
+        clientSecret: "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",
+        callbackURL: "http://localhost:8080/api/session/google",
+      },
+      async (accessToken, refreshToken, profile, cb) => {
+        try {
+          const { name, emails } = profile;
+          const user = await userDao.getByEmail(emails[0].value);
+          
+          if (user) return cb(null, user);
+
+          const newUser = await userDao.create({
+            first_name: name.givenName,
+            last_name: name.familyName,
+            email: emails[0].value,
+          });
+
+          return cb(null, newUser);
+        } catch (error) {
+          cb(error);
+        }
+      }
+    )
+  );
+
+
+
+
     // Serialización y deserialización de usuarios
    /* 
     La serialización y deserialización de usuarios es un proceso que nos permite almacenar y recuperar información del usuario en la sesión.

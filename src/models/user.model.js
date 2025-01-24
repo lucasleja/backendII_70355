@@ -14,8 +14,8 @@ const usersSchema = new mongoose.Schema({
         required: true
     },
     age: {
-        type: Number,
-        required: true
+        type: Number
+        /* required: true */
     },
     email: {
         type: String,
@@ -23,8 +23,8 @@ const usersSchema = new mongoose.Schema({
         unique: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
+        /* required: true */
     },
     cart: {
         type: String
