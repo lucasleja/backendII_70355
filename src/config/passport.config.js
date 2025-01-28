@@ -1,11 +1,15 @@
 import passport from "passport";
 import local from "passport-local";
 import google from "passport-google-oauth2";
+import jwt from "passport-jwt"
 import { userDao } from "../services/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
+import { cookieExtractor } from "../utils/cookieExtractor.js";
 
 const LocalStrategy = local.Strategy;
 const GoogleStrategy = google.Strategy;
+const  JWTStrategy = jwt.Strategy;
+const ExtractJWT = jwt.ExtractJwt;
 
 
 // Función global de estrategias
@@ -70,7 +74,6 @@ export const initializedPassport = () => {
     new GoogleStrategy(
       {
         
-        callbackURL: "http://localhost:8080/api/session/google",
       },
       async (accessToken, refreshToken, profile, cb) => {
         try {
@@ -92,6 +95,28 @@ export const initializedPassport = () => {
       }
     )
   );
+
+
+  // Estrategia JWT
+  passport.use(
+    "jwt",
+    new JWTStrategy(
+      { jwtFromRequest: ExtractJWT.fromExtractors([cookieExtractor]), secretOrKey: "codigoSecreto" },
+      async (jwt_payload, done) => {
+        try {
+          const { email } = jwt_payload;
+          const user = await userDao.getByEmail(email);
+          
+          done(null, user);
+        } catch (error) {
+          done(error);
+        }
+      }
+    )
+  );
+
+
+
 
 
 

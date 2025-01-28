@@ -2,7 +2,8 @@ import { Router } from "express";
 import { userDao } from "../services/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import passport from "passport";
-import { createToken } from "../utils/jwt.js";
+import { createToken, verifyToken } from "../utils/jwt.js";
+/* import { verify } from "jsonwebtoken"; */
 
 const router = Router();
 
@@ -54,6 +55,7 @@ router.post("/login", passport.authenticate("login"), async (req, res) => {
     } */
 
       const token = createToken(req.user)
+      res.cookie("token", token, { httpOnly: true}); //guardamos del lado del cliente el token
       res.status(200).json({status: "success", payload: req.session.user, token})
 
 
@@ -126,6 +128,19 @@ router.get("/google", passport.authenticate("google", {
   return res.status(200).json({status: "success", session: req.user})
   
 })
+
+router.get("/current", passport.authenticate("jwt"), async (req, res) => {
+
+  //const token = req.headers.authorization.split(" ")[1];
+  
+  //const token = req.cookies.token;
+  //const validToken = verifyToken(token);
+  //if (!validToken) return res.send("Not token");
+  //const user = await userDao.getByEmail(validToken.email);
+
+  res.json({ status: "ok", user: req.user });
+});
+
 
 
 

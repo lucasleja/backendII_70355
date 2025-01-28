@@ -13,7 +13,7 @@ import session from 'express-session';
 import { initializedPassport } from "../src/config/passport.config.js"
 
 
-/* import cookieParser from 'cookie-parser' */
+import cookieParser from 'cookie-parser'
 
 const app = express();
 
@@ -30,6 +30,8 @@ app.use(
   )
 
   initializedPassport();
+  app.use(cookieParser());
+
 
 // Configurar Handlebars como motor de plantillas
 app.engine('handlebars', handlebars.engine())
@@ -47,7 +49,7 @@ app.use('/api/products', productsRoutes)
 
 app.use('/api/sessions', sessionsRouter)
 
-/* app.use('/api/session', sessionsRouter) */
+app.use('/api/session', sessionsRouter)
 
 app.use('/', viewsRouter)
 
