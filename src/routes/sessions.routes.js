@@ -4,6 +4,7 @@ import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import passport from "passport";
 import { createToken, verifyToken } from "../utils/jwt.js";
 import { passportCall } from "../middlewares/passportCall.middleware.js";
+import { authorization } from "../middlewares/authorization.middleware.js";
 /* import { verify } from "jsonwebtoken"; */
 
 const router = Router();
@@ -34,14 +35,7 @@ router.post("/register", passportCall("register"), async (req, res) => {
 //router.post("/login", passport.authenticate("login"), async (req, res) => {
   router.post("/login", passportCall("login"), async (req, res) => {
   try {
-    req.session.user = {
-      first_name: req.user.first_name,
-      last_name: req.user.last_name,
-      email: req.user.email,
-      age: req.user.age,
-      /// Quitar comentar a role para autorizar a usuario no logueado
-      /* role: "user" */
-    }
+    
     /* const { email, password } = req.body;
     const user = await userDao.getByEmail(email);
     const checkPass = isValidPassword(password, user); */
@@ -58,7 +52,7 @@ router.post("/register", passportCall("register"), async (req, res) => {
 
       const token = createToken(req.user)
       res.cookie("token", token, { httpOnly: true}); //guardamos del lado del cliente el token
-      res.status(200).json({status: "success", payload: req.session.user, token})
+      res.status(200).json({status: "success", payload: req.user, token})
 
 
 
@@ -132,7 +126,7 @@ router.get("/google", passport.authenticate("google", {
 })
 
 //router.get("/current", passport.authenticate("jwt"), async (req, res) => {
-router.get("/current", passportCall("jwt"), async (req, res) => {
+router.get("/current", passportCall("jwt"),authorization("admin"), async (req, res) => {
   //const token = req.headers.authorization.split(" ")[1];
   
   //const token = req.cookies.token;
