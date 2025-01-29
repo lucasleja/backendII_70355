@@ -3,11 +3,12 @@ import { userDao } from "../services/user.dao.js";
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import passport from "passport";
 import { createToken, verifyToken } from "../utils/jwt.js";
+import { passportCall } from "../middlewares/passportCall.middleware.js";
 /* import { verify } from "jsonwebtoken"; */
 
 const router = Router();
 
-router.post("/register", passport.authenticate("register"), async (req, res) => {
+router.post("/register", passportCall("register"), async (req, res) => {
   try {
       /* const userData = req.body;
       const findUser = await userDao.getByEmail(userData.email);
@@ -30,7 +31,8 @@ router.post("/register", passport.authenticate("register"), async (req, res) => 
   
 })
 
-router.post("/login", passport.authenticate("login"), async (req, res) => {
+//router.post("/login", passport.authenticate("login"), async (req, res) => {
+  router.post("/login", passportCall("login"), async (req, res) => {
   try {
     req.session.user = {
       first_name: req.user.first_name,
@@ -129,8 +131,8 @@ router.get("/google", passport.authenticate("google", {
   
 })
 
-router.get("/current", passport.authenticate("jwt"), async (req, res) => {
-
+//router.get("/current", passport.authenticate("jwt"), async (req, res) => {
+router.get("/current", passportCall("jwt"), async (req, res) => {
   //const token = req.headers.authorization.split(" ")[1];
   
   //const token = req.cookies.token;
@@ -145,3 +147,7 @@ router.get("/current", passport.authenticate("jwt"), async (req, res) => {
 
 
 export default router;
+
+
+
+//router.post("/register", passport.authenticate("register"), async (req, res) => {
