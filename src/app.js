@@ -1,13 +1,11 @@
 import express from 'express';
 import handlebars from 'express-handlebars'
 import { Server } from 'socket.io'
-import cartsRoutes from './routes/carts.route.js'
+import cartsRoutes from './routes/carts.router.js'
 import productsRoutes from './routes/products.router.js'
 import __dirname from './utils.js';
-import viewsRouter from './routes/views.routes.js'
-import ProductManager from './services/ProductManager.js'
+/* import viewsRouter from './routes/views.routes.js' */
 import mongoose from 'mongoose';
-import CartManager from './services/CartManager.js';
 import sessionsRouter from './routes/sessions.routes.js'
 import session from 'express-session';
 import { initializedPassport } from "../src/config/passport.config.js"
@@ -51,7 +49,7 @@ app.use('/api/sessions', sessionsRouter)
 
 app.use('/api/session', sessionsRouter)
 
-app.use('/', viewsRouter)
+/* app.use('/', viewsRouter) */
 
 const httpServer = app.listen(PORT, ()=>{
     console.log(`Servidor escuchando en el puerto ${PORT}`)
@@ -75,8 +73,8 @@ connectMongoDB()
 
 
 
-const prodManag = new ProductManager()
-const cartManag = new CartManager()
+/* const prodManag = new ProductManager()
+const cartManag = new CartManager() */
 
 io.on('connection', async (socket)=>{
     const products = await prodManag.getProducts()
