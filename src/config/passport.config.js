@@ -2,7 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import google from "passport-google-oauth2";
 import jwt from "passport-jwt"
-import { userDao } from "../services/user.dao.js";
+import { userDao } from "../dao/mongo/user.dao.js"; 
 import { createHash, isValidPassword } from "../utils/hashPassword.js";
 import { cookieExtractor } from "../utils/cookieExtractor.js";
 
