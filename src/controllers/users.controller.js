@@ -2,6 +2,7 @@ import { userDao } from "../dao/mongo/user.dao.js";
 import { createHash } from "../utils/hashPassword.js";
 import { createToken } from "../utils/jwt.js";
 
+
 class UserController {
   async register(req, res) {
     try {
@@ -23,7 +24,7 @@ class UserController {
     }
   }
 
-  async getProfile(req, res) {
+  /* async getProfile(req, res) {
     try {
       if(!req.session.user) return res.status(404).json({ status: "error", msg: "Usuario no logueado"});
       if(req.session.user.role !== "user") return res.status(403).json({ status: "error", msg: "Usuario no autorizado"});
@@ -32,7 +33,19 @@ class UserController {
       console.log(error);
       res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
     }
-  }
+  } */
+
+    async getProfile(req, res) {
+      try {
+        if (!req.user) return res.status(401).json({ status: "error", msg: "Usuario no logueado" });
+    
+        res.status(200).json({ status: "success", payload: req.user });
+      } catch (error) {
+        console.log(error);
+        res.status(500).json({ status: "error", msg: "Error interno del servidor" });
+      }
+    }
+    
 
   async logout(req, res) {
     try {
