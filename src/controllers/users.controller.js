@@ -1,6 +1,7 @@
 import { userDao } from "../dao/mongo/user.dao.js";
 import { createHash } from "../utils/hashPassword.js";
 import { createToken } from "../utils/jwt.js";
+import { UserDTO } from "../dto/user.dto.js";
 
 
 class UserController {
@@ -35,7 +36,7 @@ class UserController {
     }
   } */
 
-    async getProfile(req, res) {
+    /* async getProfile(req, res) {
       try {
         if (!req.user) return res.status(401).json({ status: "error", msg: "Usuario no logueado" });
     
@@ -44,7 +45,23 @@ class UserController {
         console.log(error);
         res.status(500).json({ status: "error", msg: "Error interno del servidor" });
       }
-    }
+    } */
+
+      async getProfile(req, res) {
+        try {
+          if (!req.user) {
+            return res.status(401).json({ status: "error", msg: "Usuario no logueado" });
+          }
+      
+          // Transformar los datos del usuario con UserDTO
+          const userDTO = new UserDTO(req.user);
+      
+          res.status(200).json({ status: "success", payload: userDTO });
+        } catch (error) {
+          console.log(error);
+          res.status(500).json({ status: "error", msg: "Error interno del servidor" });
+        }
+      }
     
 
   async logout(req, res) {
