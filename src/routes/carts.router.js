@@ -1,6 +1,7 @@
 import { Router } from "express";
-import { cartDao } from "../dao/mongo/cart.dao.js";
 import { cartsControllers } from "../controllers/carts.controller.js";
+import { authorization } from "../middlewares/authorization.middleware.js";
+import { passportCall } from "../middlewares/passportCall.middleware.js";
 
 
 
@@ -10,12 +11,14 @@ router.post("/", cartsControllers.create);
 
 router.get("/:cid", cartsControllers.getById);
 
-router.post("/:cid/product/:pid", cartsControllers.addProductToCart);
+router.post("/:cid/product/:pid",passportCall("jwt"), authorization("user"), cartsControllers.addProductToCart);
 
-router.delete("/:cid/product/:pid", cartsControllers.deleteProductToCart);
+router.delete("/:cid/product/:pid", passportCall("jwt"), authorization("user"), cartsControllers.deleteProductToCart);
 
-router.put("/:cid/product/:pid", cartsControllers.updateQuantityProductInCart);
+router.put("/:cid/product/:pid", passportCall("jwt"), authorization("user"), cartsControllers.updateQuantityProductInCart);
 
-router.delete("/:cid", cartsControllers.clearProductsToCart);
+router.delete("/:cid", passportCall("jwt"), authorization("user"), cartsControllers.clearProductsToCart);
+
+router.post("/:cid/purchase", passportCall("jwt"), authorization("user"), cartsControllers.purchaseCart);
 
 export default router;

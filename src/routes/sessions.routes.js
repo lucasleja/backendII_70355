@@ -2,6 +2,7 @@ import { Router } from "express";
 import passport from "passport";
 import { passportCall } from "../middlewares/passportCall.middleware.js";
 import { usersController } from "../controllers/users.controller.js";
+import { authorization } from "../middlewares/authorization.middleware.js";
 
 const router = Router();
 
@@ -20,6 +21,8 @@ router.get("/google", passport.authenticate("google", {
   session: false
 }));
 
-router.get("/current", passportCall("jwt"), usersController.getProfile);
+/* router.get("/current", passportCall("jwt"), usersController.getProfile); */
+
+router.get("/current", passportCall("jwt"), authorization("user"), usersController.getProfile);
 
 export default router;
