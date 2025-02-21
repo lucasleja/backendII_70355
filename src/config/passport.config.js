@@ -28,7 +28,7 @@ export const initializedPassport = () => {
   
       try {
   
-        const { first_name, last_name, age, roles } = req.body;
+        const { first_name, last_name, age, role } = req.body;
         // Verificamos si el usuario ya existe
         const user = await userDao.getByEmail(username);
         if(user) return done(null, false, { message: "El usuario ya existe"});
@@ -39,7 +39,7 @@ export const initializedPassport = () => {
           email: username,
           age,
           password: createHash(password),
-          roles
+          role
         };
   
         const createUser = await userDao.create(newUser);
